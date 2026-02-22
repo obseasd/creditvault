@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CreditVault — Project Deck</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #030712;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1024px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      page-break-after: always;
+      position: relative;
+    }
+
+    .page::after {
+      content: '';
+      position: absolute;
+      bottom: 30px;
+      left: 80px;
+      right: 80px;
+      height: 1px;
+      background: #1f2937;
+    }
+
+    .page:last-child::after { display: none; }
+
+    .page-num {
+      position: absolute;
+      bottom: 35px;
+      right: 80px;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    h1 {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .green { color: #22c55e; }
+    .gray { color: #6b7280; }
+    .white { color: #fff; }
+
+    .subtitle {
+      font-size: 20px;
+      color: #9ca3af;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .tag-green { background: #052e16; color: #22c55e; border: 1px solid #14532d; }
+    .tag-blue { background: #0c1629; color: #3b82f6; border: 1px solid #1e3a5f; }
+    .tag-purple { background: #1a0a2e; color: #a855f7; border: 1px solid #3b1764; }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .card-sm {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .flow-box {
+      text-align: center;
+      padding: 16px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+    }
+
+    .flow-arrow {
+      text-align: center;
+      padding: 8px;
+      color: #22c55e;
+      font-size: 24px;
+    }
+
+    .bullet {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .bullet li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 15px;
+      color: #d1d5db;
+    }
+
+    .bullet li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 16px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      background: #1f2937;
+      color: #9ca3af;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    th:first-child { border-radius: 8px 0 0 8px; }
+    th:last-child { border-radius: 0 8px 8px 0; }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #1f2937;
+      color: #d1d5db;
+    }
+
+    .mono {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 11px;
+      color: #22c55e;
+    }
+
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      margin: 8px 0;
+    }
+
+    .bar-blue { background: #3b82f6; }
+    .bar-purple { background: #a855f7; }
+    .bar-amber { background: #f59e0b; }
+
+    .links a {
+      display: block;
+      color: #22c55e;
+      text-decoration: none;
+      padding: 6px 0;
+      font-size: 15px;
+    }
+
+    .links a:hover { text-decoration: underline; }
+
+    @media print {
+      body { background: #030712; }
+      .page {
+        padding: 40px 60px;
+        page-break-after: always;
+        min-height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ SLIDE 1: TITLE ═══════════════════ -->
+<div class="page">
+  <div style="margin-bottom: 32px;">
+    <span class="tag tag-green">BUIDL CTC Hackathon</span>
+    <span class="tag tag-blue">DeFi Track</span>
+    <span class="tag tag-purple">ERC-4626</span>
+  </div>
+  <h1><span class="white">Credit</span><span class="green">Vault</span></h1>
+  <p class="subtitle">
+    A composable yield vault on Creditcoin that automatically deploys CTC across staking, lending & LP strategies. One deposit. Three yield sources. Auto-compounded.
+  </p>
+  <div class="grid-3" style="margin-top: 40px;">
+    <div class="card-sm">
+      <p class="stat-label">Network</p>
+      <p class="stat-value" style="font-size: 22px;">Creditcoin Testnet</p>
+    </div>
+    <div class="card-sm">
+      <p class="stat-label">Contracts Deployed</p>
+      <p class="stat-value">8</p>
+    </div>
+    <div class="card-sm">
+      <p class="stat-label">Test Coverage</p>
+      <p class="stat-value">24 <span style="font-size:16px;color:#6b7280">tests</span></p>
+    </div>
+  </div>
+  <span class="page-num">1</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 2: PROBLEM ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">THE PROBLEM</p>
+  <h2>DeFi on Creditcoin is <span class="green">fragmented</span></h2>
+  <div class="grid-2" style="margin-top: 24px;">
+    <div class="card">
+      <h3>For Users</h3>
+      <ul class="bullet">
+        <li>Must manually research & evaluate each yield source</li>
+        <li>Capital sits idle or is concentrated in a single protocol</li>
+        <li>No auto-compounding — missed yield from unclaimed rewards</li>
+        <li>Multiple transactions needed to diversify across strategies</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>For the Ecosystem</h3>
+      <ul class="bullet">
+        <li>TVL is scattered across isolated protocols</li>
+        <li>No composable yield layer for other protocols to build on</li>
+        <li>New DeFi protocols struggle to attract capital</li>
+        <li>Lack of standardized vault interfaces (ERC-4626)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top: 24px; text-align: center; padding: 24px;">
+    <p style="font-size: 18px; color: #9ca3af;">
+      Creditcoin needs a <strong class="white">unified yield layer</strong> that aggregates capital, optimizes returns, and provides a <strong class="green">composable building block</strong> for the ecosystem.
+    </p>
+  </div>
+  <span class="page-num">2</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 3: SOLUTION ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">THE SOLUTION</p>
+  <h2>One vault. Three strategies. <span class="green">Auto-compounded.</span></h2>
+  <div style="margin: 32px 0;">
+    <div class="flow-box">
+      <p style="font-size: 18px; font-weight: 700; color: #fff;">User deposits CTC</p>
+      <p style="font-size: 13px; color: #6b7280;">Receives cvCTC shares (ERC-20)</p>
+    </div>
+    <div class="flow-arrow">&#8595;</div>
+    <div class="flow-box">
+      <p style="font-size: 18px; font-weight: 700; color: #22c55e;">CreditVault (ERC-4626)</p>
+      <p style="font-size: 13px; color: #6b7280;">Manages allocation, harvest, rebalance</p>
+    </div>
+    <div class="flow-arrow">&#8595;</div>
+    <div class="grid-3">
+      <div class="flow-box" style="border-color: #3b82f640;">
+        <p style="font-size: 15px; font-weight: 700; color: #3b82f6;">Staking</p>
+        <p style="font-size: 24px; font-weight: 800; color: #fff;">40%</p>
+        <p style="font-size: 12px; color: #6b7280;">~10% APY</p>
+      </div>
+      <div class="flow-box" style="border-color: #a855f740;">
+        <p style="font-size: 15px; font-weight: 700; color: #a855f7;">Lending</p>
+        <p style="font-size: 24px; font-weight: 800; color: #fff;">35%</p>
+        <p style="font-size: 12px; color: #6b7280;">~7.5% APY</p>
+      </div>
+      <div class="flow-box" style="border-color: #f59e0b40;">
+        <p style="font-size: 15px; font-weight: 700; color: #f59e0b;">Liquidity</p>
+        <p style="font-size: 24px; font-weight: 800; color: #fff;">25%</p>
+        <p style="font-size: 12px; color: #6b7280;">~5% APY</p>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="text-align: center;">
+    <p style="font-size: 14px; color: #6b7280;">Blended APY</p>
+    <p style="font-size: 42px; font-weight: 900; color: #22c55e;">~8.1%</p>
+    <p style="font-size: 14px; color: #6b7280;">Weighted across all strategies, auto-compounded on harvest</p>
+  </div>
+  <span class="page-num">3</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 4: ARCHITECTURE ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">ARCHITECTURE</p>
+  <h2>Smart Contract Design</h2>
+  <table style="margin-top: 16px;">
+    <thead>
+      <tr>
+        <th>Contract</th>
+        <th>Role</th>
+        <th>Standard</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="white" style="font-weight:600;">CreditVault.sol</td>
+        <td>Core vault — deposit, withdraw, harvest, rebalance</td>
+        <td><span class="tag tag-green" style="font-size:11px;padding:3px 10px;">ERC-4626</span></td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">WCTC.sol</td>
+        <td>Wrapped CTC — bridges native CTC to ERC-20</td>
+        <td><span class="tag tag-blue" style="font-size:11px;padding:3px 10px;">ERC-20</span></td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">StakingStrategy.sol</td>
+        <td>Staking wrapper with auto-compound</td>
+        <td><span class="tag tag-purple" style="font-size:11px;padding:3px 10px;">IStrategy</span></td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">LendingStrategy.sol</td>
+        <td>Lending wrapper with auto-compound</td>
+        <td><span class="tag tag-purple" style="font-size:11px;padding:3px 10px;">IStrategy</span></td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">LPStrategy.sol</td>
+        <td>LP wrapper with auto-compound</td>
+        <td><span class="tag tag-purple" style="font-size:11px;padding:3px 10px;">IStrategy</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 style="margin-top: 28px;">Key Design Decisions</h3>
+  <ul class="bullet">
+    <li><strong class="white">ERC-4626 standard</strong> — cvCTC shares are composable ERC-20 tokens usable as collateral across the ecosystem</li>
+    <li><strong class="white">WCTC wrapper</strong> — Bridges native CTC to ERC-20 seamlessly; users never interact with WCTC directly</li>
+    <li><strong class="white">Pluggable strategies</strong> — IStrategy interface allows swapping mock protocols for real ones without changing the vault</li>
+    <li><strong class="white">Per-block yield accrual</strong> — Mock protocols simulate realistic, time-based reward accumulation</li>
+  </ul>
+  <span class="page-num">4</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 5: TECH + TESTING ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">TECHNICAL DEPTH</p>
+  <h2>Built for Production</h2>
+  <div class="grid-2" style="margin-top: 16px;">
+    <div>
+      <h3>Tech Stack</h3>
+      <table>
+        <tbody>
+          <tr><td style="color:#6b7280;">Contracts</td><td class="white">Solidity 0.8.29 + Foundry</td></tr>
+          <tr><td style="color:#6b7280;">Vault Standard</td><td class="white">OpenZeppelin ERC-4626 v5.5</td></tr>
+          <tr><td style="color:#6b7280;">Frontend</td><td class="white">Next.js 16 + TypeScript</td></tr>
+          <tr><td style="color:#6b7280;">Styling</td><td class="white">Tailwind CSS</td></tr>
+          <tr><td style="color:#6b7280;">Wallet</td><td class="white">wagmi v2 + RainbowKit</td></tr>
+          <tr><td style="color:#6b7280;">Charts</td><td class="white">Recharts</td></tr>
+          <tr><td style="color:#6b7280;">Chain</td><td class="white">Creditcoin Testnet</td></tr>
+          <tr><td style="color:#6b7280;">Hosting</td><td class="white">Vercel</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Testing</h3>
+      <div class="card-sm" style="margin-bottom: 12px;">
+        <p class="stat-label">Test Results</p>
+        <p class="stat-value" style="color:#22c55e;">24/24 <span style="font-size:16px;">passed</span></p>
+      </div>
+      <ul class="bullet" style="font-size: 13px;">
+        <li>Multi-user deposit/withdraw scenarios</li>
+        <li>Harvest + auto-compound verification</li>
+        <li>Rebalance across all 3 strategies</li>
+        <li>Share price appreciation after yield</li>
+        <li>Access control (owner, keeper)</li>
+        <li>Edge cases (zero deposit, weight validation)</li>
+        <li>Fuzz test — 257 randomized runs</li>
+      </ul>
+    </div>
+  </div>
+  <h3 style="margin-top: 24px;">Strategy Allocation</h3>
+  <div class="bar" style="background: #1f2937;">
+    <div class="bar-blue" style="width: 40%;"></div>
+    <div class="bar-purple" style="width: 35%;"></div>
+    <div class="bar-amber" style="width: 25%;"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;">
+    <span><span style="color:#3b82f6;">&#9679;</span> Staking 40%</span>
+    <span><span style="color:#a855f7;">&#9679;</span> Lending 35%</span>
+    <span><span style="color:#f59e0b;">&#9679;</span> LP 25%</span>
+  </div>
+  <span class="page-num">5</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 6: DEPLOYMENT ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">DEPLOYMENT</p>
+  <h2>Live on Creditcoin Testnet</h2>
+  <p style="color:#6b7280;margin-bottom:24px;">All 8 contracts deployed and verified on Blockscout with full source code.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Contract</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="white" style="font-weight:600;">CreditVault</td>
+        <td class="mono">0x47bdf18319B5068d88E80C8edFD075d63470e222</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">WCTC</td>
+        <td class="mono">0xBFd5542a97E96D8F2E2D1A39E839c7A15bA731E1</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">StakingStrategy</td>
+        <td class="mono">0x70e2FdF55A4314c9ac521f133577CdF4C297DB3b</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">LendingStrategy</td>
+        <td class="mono">0x87FFB21B290B01D7cb8B696dFBFCe692587aAA8D</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">LPStrategy</td>
+        <td class="mono">0x0767Bc9c393967c21F7800C5C806Fdc65C5C77bC</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">MockStaking</td>
+        <td class="mono">0x5e3Fe22590C61818e13CB3F1f75a809A1b014BC3</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">MockLendingPool</td>
+        <td class="mono">0xea927CE7A20F957ECDDe6888ecfDa79f43e6197F</td>
+      </tr>
+      <tr>
+        <td class="white" style="font-weight:600;">MockAMM</td>
+        <td class="mono">0x96784C7deCcAc3Fdc86f5988f66888eb18359c3F</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="grid-2" style="margin-top: 24px;">
+    <div class="card-sm" style="text-align:center;">
+      <p class="stat-label">Chain ID</p>
+      <p class="stat-value" style="font-size: 28px;">102031</p>
+    </div>
+    <div class="card-sm" style="text-align:center;">
+      <p class="stat-label">Verified on Explorer</p>
+      <p class="stat-value" style="font-size: 28px; color: #22c55e;">8/8</p>
+    </div>
+  </div>
+  <span class="page-num">6</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 7: CEIP FIT ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">ECOSYSTEM FIT</p>
+  <h2>Why CreditVault for <span class="green">Creditcoin</span></h2>
+  <div class="grid-2" style="margin-top: 24px;">
+    <div class="card">
+      <h3 style="color:#22c55e;">DeFi Infrastructure</h3>
+      <p style="font-size: 14px; color: #9ca3af;">
+        CreditVault is the first composable yield layer on Creditcoin. As new DeFi protocols launch
+        (DEXs, lending, liquid staking), the vault can integrate them as strategies — driving TVL
+        to the entire ecosystem from a single entry point.
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="color:#3b82f6;">ERC-4626 Composability</h3>
+      <p style="font-size: 14px; color: #9ca3af;">
+        cvCTC shares follow the ERC-4626 standard — the same standard used by Yearn, Morpho, and EigenLayer.
+        Any protocol on Creditcoin can accept cvCTC as collateral, building a composable DeFi stack.
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="color:#a855f7;">TVL Growth Engine</h3>
+      <p style="font-size: 14px; color: #9ca3af;">
+        Instead of users choosing between staking OR lending OR LP, CreditVault lets them do all three
+        with one deposit. This increases capital efficiency and total ecosystem TVL simultaneously.
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="color:#f59e0b;">Production Ready</h3>
+      <p style="font-size: 14px; color: #9ca3af;">
+        Pluggable IStrategy interface means zero vault changes when real protocols launch. Just deploy
+        a new strategy adapter, call setStrategies(), and the vault seamlessly redirects capital.
+      </p>
+    </div>
+  </div>
+  <div class="card" style="margin-top: 24px; text-align: center; border-color: #14532d;">
+    <p style="font-size: 16px; color: #22c55e; font-weight: 600;">
+      CEIP Investment Fast-Track
+    </p>
+    <p style="font-size: 14px; color: #9ca3af; margin-top: 8px;">
+      CreditVault is purpose-built for Creditcoin's DeFi ecosystem growth. The vault architecture
+      creates a flywheel: more strategies &rarr; better yield &rarr; more deposits &rarr; more TVL for the ecosystem.
+    </p>
+  </div>
+  <span class="page-num">7</span>
+</div>
+
+<!-- ═══════════════════ SLIDE 8: LINKS ═══════════════════ -->
+<div class="page">
+  <p class="stat-label" style="margin-bottom:8px;">GET STARTED</p>
+  <h2>Links & Resources</h2>
+  <div class="grid-2" style="margin-top: 32px;">
+    <div class="card" style="padding: 32px;">
+      <h3>Live Application</h3>
+      <div class="links">
+        <a href="https://creditvault.vercel.app">https://creditvault.vercel.app</a>
+      </div>
+      <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">
+        Connect MetaMask with Creditcoin Testnet to try deposit/withdraw/view strategies.
+      </p>
+    </div>
+    <div class="card" style="padding: 32px;">
+      <h3>Source Code</h3>
+      <div class="links">
+        <a href="https://github.com/obseasd/creditvault">https://github.com/obseasd/creditvault</a>
+      </div>
+      <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">
+        Full source: Solidity contracts, Foundry tests, Next.js frontend. MIT licensed.
+      </p>
+    </div>
+    <div class="card" style="padding: 32px;">
+      <h3>Vault Contract</h3>
+      <div class="links">
+        <a href="https://creditcoin-testnet.blockscout.com/address/0x47bdf18319B5068d88E80C8edFD075d63470e222">View on Blockscout</a>
+      </div>
+      <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">
+        Verified source code, transaction history, and event logs on Creditcoin's explorer.
+      </p>
+    </div>
+    <div class="card" style="padding: 32px;">
+      <h3>Testnet Setup</h3>
+      <div class="links">
+        <a href="https://docs.creditcoin.org/wallets/using-testnet-faucet">Get tCTC from Faucet</a>
+      </div>
+      <p style="font-size: 13px; color: #6b7280; margin-top: 12px;">
+        RPC: rpc.cc3-testnet.creditcoin.network<br/>
+        Chain ID: 102031
+      </p>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top: 48px;">
+    <h1><span class="white">Credit</span><span class="green">Vault</span></h1>
+    <p style="color: #6b7280; font-size: 16px;">Composable Yield Vault on Creditcoin</p>
+    <p style="color: #4b5563; font-size: 13px; margin-top: 16px;">Built for the BUIDL CTC Hackathon 2026</p>
+  </div>
+  <span class="page-num">8</span>
+</div>
+
+</body>
+</html>
