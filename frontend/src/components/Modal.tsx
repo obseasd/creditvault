@@ -9,7 +9,6 @@ interface ModalProps {
 }
 
 export function Modal({ open, onClose, children }: ModalProps) {
-  // Close on Escape
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -19,7 +18,6 @@ export function Modal({ open, onClose, children }: ModalProps) {
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
-  // Lock body scroll
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -33,20 +31,17 @@ export function Modal({ open, onClose, children }: ModalProps) {
 
   return (
     <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-md"
         onClick={onClose}
       />
-      {/* Content */}
-      <div className="relative w-full max-w-md rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-md rounded-3xl bg-cv-card p-7 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]">
         {children}
       </div>
     </div>
   );
 }
 
-// ─── Confirmation variant ─────────────────────────────────────────
 interface ConfirmModalProps {
   open: boolean;
   onClose: () => void;
@@ -70,23 +65,23 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   return (
     <Modal open={open} onClose={onClose}>
-      <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
-      <div className="text-sm text-gray-400 mb-6">{children}</div>
+      <h3 className="text-lg font-semibold text-cv-text1 mb-4">{title}</h3>
+      <div className="text-sm text-cv-text2 mb-6">{children}</div>
       <div className="flex gap-3">
         <button
           onClick={onClose}
           disabled={busy}
-          className="flex-1 rounded-xl border border-gray-700 py-2.5 text-sm font-medium text-gray-400 hover:border-gray-500 hover:text-white transition-colors disabled:opacity-40"
+          className="flex-1 rounded-2xl bg-cv-elevated py-3 text-sm font-medium text-cv-text2 hover:bg-cv-module hover:text-cv-text1 transition-all duration-200 disabled:opacity-30"
         >
           Cancel
         </button>
         <button
           onClick={onConfirm}
           disabled={busy}
-          className={`flex-1 rounded-xl py-2.5 text-sm font-bold text-white transition-colors disabled:opacity-40 ${
+          className={`flex-1 rounded-2xl py-3 text-sm font-semibold text-white transition-all duration-200 disabled:opacity-30 ${
             confirmVariant === "green"
-              ? "bg-green-600 hover:bg-green-500"
-              : "bg-red-600 hover:bg-red-500"
+              ? "bg-cv-green hover:brightness-110"
+              : "bg-cv-red hover:brightness-110"
           }`}
         >
           {busy ? (

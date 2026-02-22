@@ -17,7 +17,6 @@ import { Navbar } from "@/components/Navbar";
 import { StatSkeleton, ChartSkeleton, CardSkeleton } from "@/components/Skeleton";
 import { useVaultData, useUserVault } from "@/hooks/useVault";
 
-// ─── helpers ──────────────────────────────────────────────────────
 function fmt(val: bigint | undefined, decimals = 4): string {
   if (val === undefined) return "—";
   return Number(formatEther(val)).toFixed(decimals);
@@ -30,7 +29,6 @@ function fmtNum(n: number, decimals = 4): string {
   });
 }
 
-// ─── Stat card ────────────────────────────────────────────────────
 function Stat({
   label,
   value,
@@ -43,21 +41,18 @@ function Stat({
   accent?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-6">
-      <p className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-gray-500">
-        {label}
-      </p>
+    <div className="rounded-3xl bg-cv-card p-5 sm:p-7">
+      <p className="text-xs font-medium text-cv-text3">{label}</p>
       <p
-        className={`mt-1 sm:mt-2 text-lg sm:text-2xl font-bold ${accent ? "text-green-400" : "text-white"}`}
+        className={`mt-2 text-2xl sm:text-3xl font-semibold tracking-tight ${accent ? "text-cv-green" : "text-cv-text1"}`}
       >
         {value}
       </p>
-      {sub && <p className="mt-1 text-[10px] sm:text-xs text-gray-500">{sub}</p>}
+      {sub && <p className="mt-1 text-xs text-cv-text4">{sub}</p>}
     </div>
   );
 }
 
-// ─── PnL Chart ────────────────────────────────────────────────────
 function PnLChart({
   sharePrice,
   apy,
@@ -102,25 +97,25 @@ function PnLChart({
   }, [sharePrice, apy, userShares]);
 
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-6">
+    <div className="rounded-3xl bg-cv-card p-5 sm:p-7">
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
-          <p className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-gray-500">
+          <p className="text-xs font-medium text-cv-text3">
             {userShares > 0
               ? "Portfolio Value Projection"
               : "Share Price Trajectory"}
           </p>
-          <p className="mt-1 text-xs sm:text-sm text-gray-400">
+          <p className="mt-1 text-sm text-cv-text2">
             Based on current {apy.toFixed(2)}% APY
           </p>
         </div>
-        <div className="flex items-center gap-4 text-[10px] sm:text-xs text-gray-500">
+        <div className="flex items-center gap-4 text-xs text-cv-text3">
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
+            <span className="inline-block h-2 w-2 rounded-full bg-cv-green" />
             Historical
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2 w-2 rounded-full bg-green-500/40" />
+            <span className="inline-block h-2 w-2 rounded-full bg-cv-green/40" />
             Projected
           </span>
         </div>
@@ -130,24 +125,24 @@ function PnLChart({
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+              <stop offset="5%" stopColor="#27AE60" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#27AE60" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorProjected" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.15} />
-              <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+              <stop offset="5%" stopColor="#27AE60" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="#27AE60" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#2C2F36" />
           <XAxis
             dataKey="day"
-            tick={{ fill: "#6b7280", fontSize: 10 }}
-            axisLine={{ stroke: "#374151" }}
+            tick={{ fill: "#8F96AC", fontSize: 10 }}
+            axisLine={{ stroke: "#40444F" }}
             tickLine={false}
             interval="preserveStartEnd"
           />
           <YAxis
-            tick={{ fill: "#6b7280", fontSize: 10 }}
+            tick={{ fill: "#8F96AC", fontSize: 10 }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v: number) => v.toFixed(4)}
@@ -156,12 +151,12 @@ function PnLChart({
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#111827",
-              border: "1px solid #374151",
-              borderRadius: "0.75rem",
+              backgroundColor: "#212429",
+              border: "1px solid #2C2F36",
+              borderRadius: "1rem",
               fontSize: "0.75rem",
             }}
-            labelStyle={{ color: "#9ca3af" }}
+            labelStyle={{ color: "#8F96AC" }}
             formatter={(value: number | undefined) => {
               if (value == null) return ["—", "Value"];
               return [`${value.toFixed(6)} CTC`, "Value"];
@@ -170,7 +165,7 @@ function PnLChart({
           <Area
             type="monotone"
             dataKey="value"
-            stroke="#22c55e"
+            stroke="#27AE60"
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#colorValue)"
@@ -179,7 +174,7 @@ function PnLChart({
           <Area
             type="monotone"
             dataKey="projected"
-            stroke="#22c55e"
+            stroke="#27AE60"
             strokeWidth={2}
             strokeDasharray="6 3"
             fillOpacity={1}
@@ -192,7 +187,6 @@ function PnLChart({
   );
 }
 
-// ─── Strategy mini cards ──────────────────────────────────────────
 function StrategyCards({
   allocations,
   totalAssets,
@@ -203,35 +197,36 @@ function StrategyCards({
   pendingRewards: [bigint, bigint, bigint] | undefined;
 }) {
   const strategies = [
-    { name: "Staking", color: "border-blue-500/50 bg-blue-500/5", dot: "bg-blue-500", weight: "40%" },
-    { name: "Lending", color: "border-purple-500/50 bg-purple-500/5", dot: "bg-purple-500", weight: "35%" },
-    { name: "LP", color: "border-amber-500/50 bg-amber-500/5", dot: "bg-amber-500", weight: "25%" },
+    { name: "Staking", color: "#2172E5", dot: "bg-cv-blue", weight: "40%" },
+    { name: "Lending", color: "#8B5CF6", dot: "bg-cv-purple", weight: "35%" },
+    { name: "LP", color: "#F59E0B", dot: "bg-cv-amber", weight: "25%" },
   ];
 
   const total = totalAssets ? Number(formatEther(totalAssets)) : 0;
 
   return (
-    <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
+    <div className="grid gap-4 sm:gap-5 md:grid-cols-3">
       {strategies.map((s, i) => {
         const alloc = allocations && totalAssets ? Number(formatEther(allocations[i])) : 0;
         const pct = total > 0 ? ((alloc / total) * 100).toFixed(1) : "0.0";
         const reward = pendingRewards ? Number(formatEther(pendingRewards[i])) : 0;
 
         return (
-          <div key={s.name} className={`rounded-xl border ${s.color} p-4 sm:p-5`}>
+          <div key={s.name} className="rounded-3xl bg-cv-card p-5 sm:p-6 relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-3xl" style={{ backgroundColor: s.color }} />
             <div className="flex items-center gap-2 mb-3">
               <span className={`inline-block h-2.5 w-2.5 rounded-full ${s.dot}`} />
-              <span className="text-sm font-semibold text-white">{s.name}</span>
-              <span className="ml-auto text-[10px] sm:text-xs text-gray-500">
+              <span className="text-sm font-semibold text-cv-text1">{s.name}</span>
+              <span className="ml-auto text-xs text-cv-text3">
                 Target {s.weight}
               </span>
             </div>
-            <p className="text-lg sm:text-xl font-bold text-white">
+            <p className="text-lg sm:text-xl font-semibold text-cv-text1">
               {fmtNum(alloc)} CTC
             </p>
-            <div className="mt-2 flex items-center justify-between text-[10px] sm:text-xs text-gray-500">
+            <div className="mt-2 flex items-center justify-between text-xs text-cv-text3">
               <span>{pct}% of TVL</span>
-              <span className="text-green-400">+{reward.toFixed(6)} pending</span>
+              <span className="text-cv-green">+{reward.toFixed(6)} pending</span>
             </div>
           </div>
         );
@@ -240,7 +235,6 @@ function StrategyCards({
   );
 }
 
-// ─── Main Dashboard ───────────────────────────────────────────────
 export default function Dashboard() {
   const { isConnected } = useAccount();
   const vault = useVaultData();
@@ -264,29 +258,29 @@ export default function Dashboard() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen cv-page-gradient">
       <Navbar />
 
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">Dashboard</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-cv-text1">Dashboard</h2>
+            <p className="mt-2 text-sm text-cv-text2">
               CreditVault protocol overview
               {isConnected && " & your portfolio"}
             </p>
           </div>
           <Link
             href="/vault"
-            className="rounded-xl bg-green-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-green-500 transition-colors text-center"
+            className="rounded-2xl bg-cv-green px-8 py-3 text-sm font-semibold text-white hover:bg-cv-green-hover transition-all duration-200 text-center shadow-[0_0_24px_rgba(39,174,96,0.15)] hover:shadow-[0_0_32px_rgba(39,174,96,0.25)]"
           >
             Deposit / Withdraw
           </Link>
         </div>
 
         {/* Protocol stats */}
-        <div className="mb-6 grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
+        <div className="mb-8 grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4">
           {vault.isLoading ? (
             <>
               <StatSkeleton />
@@ -331,36 +325,36 @@ export default function Dashboard() {
 
         {/* User portfolio */}
         {isConnected && user.userShares && user.userShares > 0n && (
-          <div className="mb-6 rounded-2xl border border-green-800/30 bg-green-900/10 p-4 sm:p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-green-400 mb-4">
+          <div className="mb-8 rounded-3xl bg-cv-card p-6 sm:p-8">
+            <p className="text-sm font-medium text-cv-green mb-5">
               Your Portfolio
             </p>
-            <div className="grid gap-4 sm:gap-6 grid-cols-2 md:grid-cols-4">
+            <div className="grid gap-5 sm:gap-6 grid-cols-2 md:grid-cols-4">
               <div>
-                <p className="text-[10px] sm:text-xs text-gray-500">Deposited (shares)</p>
-                <p className="text-lg sm:text-xl font-bold text-white">
+                <p className="text-xs text-cv-text3">Deposited (shares)</p>
+                <p className="mt-1 text-lg sm:text-xl font-semibold text-cv-text1">
                   {fmtNum(userSharesNum)} cvCTC
                 </p>
               </div>
               <div>
-                <p className="text-[10px] sm:text-xs text-gray-500">Current Value</p>
-                <p className="text-lg sm:text-xl font-bold text-white">
+                <p className="text-xs text-cv-text3">Current Value</p>
+                <p className="mt-1 text-lg sm:text-xl font-semibold text-cv-text1">
                   {fmtNum(userAssetsNum)} CTC
                 </p>
               </div>
               <div>
-                <p className="text-[10px] sm:text-xs text-gray-500">Profit / Loss</p>
+                <p className="text-xs text-cv-text3">Profit / Loss</p>
                 <p
-                  className={`text-lg sm:text-xl font-bold ${pnl >= 0 ? "text-green-400" : "text-red-400"}`}
+                  className={`mt-1 text-lg sm:text-xl font-semibold ${pnl >= 0 ? "text-cv-green" : "text-cv-red"}`}
                 >
                   {pnl >= 0 ? "+" : ""}
                   {pnl.toFixed(6)} CTC
                 </p>
               </div>
               <div>
-                <p className="text-[10px] sm:text-xs text-gray-500">Return</p>
+                <p className="text-xs text-cv-text3">Return</p>
                 <p
-                  className={`text-lg sm:text-xl font-bold ${pnlPct >= 0 ? "text-green-400" : "text-red-400"}`}
+                  className={`mt-1 text-lg sm:text-xl font-semibold ${pnlPct >= 0 ? "text-cv-green" : "text-cv-red"}`}
                 >
                   {pnlPct >= 0 ? "+" : ""}
                   {pnlPct.toFixed(4)}%
@@ -371,7 +365,7 @@ export default function Dashboard() {
         )}
 
         {/* PnL chart */}
-        <div className="mb-6">
+        <div className="mb-8">
           {vault.isLoading ? (
             <ChartSkeleton />
           ) : (
@@ -384,8 +378,8 @@ export default function Dashboard() {
         </div>
 
         {/* Strategy allocation cards */}
-        <div className="mb-6">
-          <h3 className="text-base sm:text-lg font-bold text-white mb-4">
+        <div className="mb-8">
+          <h3 className="text-base sm:text-lg font-semibold text-cv-text1 mb-4">
             Strategy Allocation
           </h3>
           {vault.isLoading ? (
@@ -404,9 +398,9 @@ export default function Dashboard() {
         </div>
 
         {/* How it works */}
-        <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-6">
-          <h3 className="text-base sm:text-lg font-bold text-white mb-4">How It Works</h3>
-          <div className="grid gap-4 md:grid-cols-3">
+        <div className="rounded-3xl bg-cv-card p-6 sm:p-8">
+          <h3 className="text-base sm:text-lg font-semibold text-cv-text1 mb-5">How It Works</h3>
+          <div className="grid gap-5 md:grid-cols-3">
             {[
               {
                 step: "1",
@@ -425,12 +419,12 @@ export default function Dashboard() {
               },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex gap-3">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green-600 text-xs font-bold text-white">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cv-green text-xs font-semibold text-white">
                   {step}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{title}</p>
-                  <p className="text-xs text-gray-500">{desc}</p>
+                  <p className="text-sm font-semibold text-cv-text1">{title}</p>
+                  <p className="text-xs text-cv-text3">{desc}</p>
                 </div>
               </div>
             ))}
@@ -438,12 +432,12 @@ export default function Dashboard() {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <a
             href="https://creditcoin-testnet.blockscout.com/address/0x47bdf18319B5068d88E80C8edFD075d63470e222"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] sm:text-xs text-gray-600 hover:text-gray-400 transition-colors"
+            className="text-xs text-cv-text4 hover:text-cv-text3 transition-colors"
           >
             Vault Contract: 0x47bdf18319B5068d88E80C8edFD075d63470e222
             &middot; Creditcoin Testnet

@@ -1,8 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cv-bg-page:       #191B1F;
+  --cv-bg-card:       #212429;
+  --cv-bg-elevated:   #2C2F36;
+  --cv-bg-input:      #2C2F36;
+  --cv-bg-module:     #40444F;
+
+  --cv-text-primary:  #FFFFFF;
+  --cv-text-secondary:#C3C5CB;
+  --cv-text-tertiary: #8F96AC;
+  --cv-text-muted:    #565A69;
+
+  --cv-accent-green:  #27AE60;
+  --cv-accent-green-hover: #2CC26B;
+  --cv-accent-red:    #FD4040;
+  --cv-accent-blue:   #2172E5;
+  --cv-accent-purple: #8B5CF6;
+  --cv-accent-amber:  #F59E0B;
+
+  --cv-border-subtle: rgba(255, 255, 255, 0.06);
+
+  --background:       #191B1F;
+  --foreground:       #FFFFFF;
 }
 
 @theme inline {
@@ -10,13 +30,22 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cv-page:      var(--cv-bg-page);
+  --color-cv-card:      var(--cv-bg-card);
+  --color-cv-elevated:  var(--cv-bg-elevated);
+  --color-cv-input:     var(--cv-bg-input);
+  --color-cv-module:    var(--cv-bg-module);
+  --color-cv-green:     var(--cv-accent-green);
+  --color-cv-green-hover: var(--cv-accent-green-hover);
+  --color-cv-red:       var(--cv-accent-red);
+  --color-cv-blue:      var(--cv-accent-blue);
+  --color-cv-purple:    var(--cv-accent-purple);
+  --color-cv-amber:     var(--cv-accent-amber);
+  --color-cv-text1:     var(--cv-text-primary);
+  --color-cv-text2:     var(--cv-text-secondary);
+  --color-cv-text3:     var(--cv-text-tertiary);
+  --color-cv-text4:     var(--cv-text-muted);
 }
 
 body {
@@ -24,3 +53,23 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.cv-page-gradient {
+  background:
+    radial-gradient(50% 50% at 50% 0%, rgba(39, 174, 96, 0.06) 0%, transparent 100%),
+    var(--cv-bg-page);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cv-bg-page); }
+::-webkit-scrollbar-thumb { background: var(--cv-bg-elevated); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cv-bg-module); }

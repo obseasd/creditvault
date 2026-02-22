@@ -1,6 +1,5 @@
 "use client";
 
-// ─── Base pulse bar ───────────────────────────────────────────────
 export function Skeleton({
   className = "",
   style,
@@ -10,26 +9,24 @@ export function Skeleton({
 }) {
   return (
     <div
-      className={`animate-pulse rounded-lg bg-gray-800 ${className}`}
+      className={`animate-pulse rounded-xl bg-cv-elevated ${className}`}
       style={style}
     />
   );
 }
 
-// ─── Stat card skeleton ───────────────────────────────────────────
 export function StatSkeleton() {
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
+    <div className="rounded-3xl bg-cv-card p-7">
       <Skeleton className="h-3 w-20 mb-3" />
       <Skeleton className="h-7 w-32" />
     </div>
   );
 }
 
-// ─── Chart skeleton ───────────────────────────────────────────────
 export function ChartSkeleton() {
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
+    <div className="rounded-3xl bg-cv-card p-7">
       <Skeleton className="h-3 w-48 mb-2" />
       <Skeleton className="h-3 w-32 mb-6" />
       <div className="flex items-end gap-1 h-[260px]">
@@ -47,10 +44,9 @@ export function ChartSkeleton() {
   );
 }
 
-// ─── Card skeleton ────────────────────────────────────────────────
 export function CardSkeleton({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
+    <div className="rounded-3xl bg-cv-card p-7">
       <Skeleton className="h-4 w-24 mb-4" />
       {Array.from({ length: lines }).map((_, i) => (
         <Skeleton
@@ -62,10 +58,9 @@ export function CardSkeleton({ lines = 3 }: { lines?: number }) {
   );
 }
 
-// ─── Table row skeleton ───────────────────────────────────────────
 export function TableRowSkeleton() {
   return (
-    <div className="flex items-center gap-4 border-b border-gray-800/50 px-6 py-4">
+    <div className="flex items-center gap-4 border-b border-white/5 px-6 py-4">
       <Skeleton className="h-5 w-16 rounded-full" />
       <Skeleton className="h-4 w-24" />
       <Skeleton className="h-3 w-32 hidden md:block" />

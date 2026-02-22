@@ -9,7 +9,6 @@ import {
   type ReactNode,
 } from "react";
 
-// ─── types ────────────────────────────────────────────────────────
 type ToastVariant = "success" | "error" | "info";
 
 interface Toast {
@@ -27,14 +26,12 @@ interface ToastContextValue {
   ) => void;
 }
 
-// ─── context ──────────────────────────────────────────────────────
 const ToastContext = createContext<ToastContextValue>({
   toast: () => {},
 });
 
 export const useToast = () => useContext(ToastContext);
 
-// ─── icons ────────────────────────────────────────────────────────
 function CheckIcon() {
   return (
     <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -71,11 +68,10 @@ function InfoIcon() {
   );
 }
 
-// ─── toast item ───────────────────────────────────────────────────
 const VARIANT_STYLES: Record<ToastVariant, string> = {
-  success: "border-green-800/60 bg-green-950/90 text-green-400",
-  error: "border-red-800/60 bg-red-950/90 text-red-400",
-  info: "border-blue-800/60 bg-blue-950/90 text-blue-400",
+  success: "bg-cv-card/95 text-cv-green",
+  error: "bg-cv-card/95 text-cv-red",
+  info: "bg-cv-card/95 text-cv-blue",
 };
 
 function ToastItem({
@@ -98,7 +94,7 @@ function ToastItem({
 
   return (
     <div
-      className={`flex items-start gap-3 rounded-xl border px-4 py-3 shadow-2xl backdrop-blur-sm transition-all duration-300 ${
+      className={`flex items-start gap-3 rounded-2xl px-4 py-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 ${
         VARIANT_STYLES[t.variant]
       } ${exiting ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
     >
@@ -132,7 +128,6 @@ function ToastItem({
   );
 }
 
-// ─── provider ─────────────────────────────────────────────────────
 let _nextId = 0;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -157,7 +152,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ toast: addToast }}>
       {children}
-      {/* Toast container — bottom-right */}
       <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)] pointer-events-none">
         {toasts.map((t) => (
           <div key={t.id} className="pointer-events-auto">

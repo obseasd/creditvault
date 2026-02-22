@@ -7,7 +7,6 @@ import { Navbar } from "@/components/Navbar";
 import { StatSkeleton, TableRowSkeleton } from "@/components/Skeleton";
 import { ADDRESSES, CREDIT_VAULT_ABI } from "@/config/contracts";
 
-// ─── types ────────────────────────────────────────────────────────
 type TxType = "Deposit" | "Withdraw" | "Harvest" | "Rebalance";
 
 interface VaultTx {
@@ -23,7 +22,6 @@ interface VaultTx {
 
 const VAULT = ADDRESSES.CreditVault as `0x${string}`;
 
-// ─── helpers ──────────────────────────────────────────────────────
 function shortenAddr(addr: string): string {
   return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 }
@@ -39,15 +37,13 @@ function fmtCTC(val: bigint, decimals = 4): string {
   });
 }
 
-// ─── badge styles ─────────────────────────────────────────────────
 const TYPE_STYLES: Record<TxType, string> = {
-  Deposit: "bg-green-900/40 text-green-400 border-green-800/50",
-  Withdraw: "bg-red-900/40 text-red-400 border-red-800/50",
-  Harvest: "bg-purple-900/40 text-purple-400 border-purple-800/50",
-  Rebalance: "bg-blue-900/40 text-blue-400 border-blue-800/50",
+  Deposit: "bg-cv-green/15 text-cv-green",
+  Withdraw: "bg-cv-red/15 text-cv-red",
+  Harvest: "bg-cv-purple/15 text-cv-purple",
+  Rebalance: "bg-cv-blue/15 text-cv-blue",
 };
 
-// ─── filter tabs ──────────────────────────────────────────────────
 const FILTERS: { label: string; value: TxType | "All" | "Mine" }[] = [
   { label: "All", value: "All" },
   { label: "My Txs", value: "Mine" },
@@ -57,7 +53,6 @@ const FILTERS: { label: string; value: TxType | "All" | "Mine" }[] = [
   { label: "Rebalances", value: "Rebalance" },
 ];
 
-// ─── Mobile tx card ───────────────────────────────────────────────
 function TxCard({
   tx,
   address,
@@ -66,10 +61,10 @@ function TxCard({
   address: string | undefined;
 }) {
   return (
-    <div className="border-b border-gray-800/50 px-4 py-4 last:border-0">
+    <div className="border-b border-white/5 px-4 py-4 last:border-0">
       <div className="flex items-center justify-between mb-2">
         <span
-          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${TYPE_STYLES[tx.type]}`}
+          className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-medium ${TYPE_STYLES[tx.type]}`}
         >
           {tx.type}
         </span>
@@ -77,25 +72,25 @@ function TxCard({
           href={`https://creditcoin-testnet.blockscout.com/tx/${tx.txHash}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] font-mono text-green-400/70 hover:text-green-400 transition-colors"
+          className="text-[10px] font-mono text-cv-green/70 hover:text-cv-green transition-colors"
         >
           {shortenHash(tx.txHash)}
         </a>
       </div>
       <p
-        className={`text-sm font-bold ${
+        className={`text-sm font-semibold ${
           tx.type === "Deposit"
-            ? "text-green-400"
+            ? "text-cv-green"
             : tx.type === "Withdraw"
-              ? "text-red-400"
-              : "text-white"
+              ? "text-cv-red"
+              : "text-cv-text1"
         }`}
       >
         {tx.type === "Deposit" && "+"}
         {tx.type === "Withdraw" && "-"}
         {fmtCTC(tx.amount, 6)} CTC
       </p>
-      <div className="mt-1 flex items-center justify-between text-[10px] text-gray-500">
+      <div className="mt-1 flex items-center justify-between text-[10px] text-cv-text3">
         <span>
           {tx.user
             ? tx.user.toLowerCase() === address?.toLowerCase()
@@ -110,7 +105,7 @@ function TxCard({
         <span className="font-mono">#{tx.blockNumber.toString()}</span>
       </div>
       {tx.shares !== undefined && tx.shares > 0n && (
-        <p className="mt-0.5 text-[10px] text-gray-600">
+        <p className="mt-0.5 text-[10px] text-cv-text4">
           {fmtCTC(tx.shares, 4)} cvCTC shares
         </p>
       )}
@@ -118,7 +113,6 @@ function TxCard({
   );
 }
 
-// ─── Desktop tx row ───────────────────────────────────────────────
 function TxRow({
   tx,
   address,
@@ -127,26 +121,24 @@ function TxRow({
   address: string | undefined;
 }) {
   return (
-    <div className="grid grid-cols-12 gap-4 border-b border-gray-800/50 px-6 py-4 hover:bg-gray-800/30 transition-colors last:border-0">
-      {/* Type badge */}
+    <div className="grid grid-cols-12 gap-4 border-b border-white/5 px-6 py-4 hover:bg-cv-elevated/30 transition-colors last:border-0">
       <div className="col-span-2 flex items-center">
         <span
-          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${TYPE_STYLES[tx.type]}`}
+          className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-medium ${TYPE_STYLES[tx.type]}`}
         >
           {tx.type}
         </span>
       </div>
 
-      {/* Amount */}
       <div className="col-span-3 flex items-center">
         <div>
           <p
-            className={`text-sm font-bold ${
+            className={`text-sm font-semibold ${
               tx.type === "Deposit"
-                ? "text-green-400"
+                ? "text-cv-green"
                 : tx.type === "Withdraw"
-                  ? "text-red-400"
-                  : "text-white"
+                  ? "text-cv-red"
+                  : "text-cv-text1"
             }`}
           >
             {tx.type === "Deposit" && "+"}
@@ -154,31 +146,30 @@ function TxRow({
             {fmtCTC(tx.amount, 6)} CTC
           </p>
           {tx.shares !== undefined && tx.shares > 0n && (
-            <p className="text-[10px] text-gray-500">
+            <p className="text-[10px] text-cv-text3">
               {fmtCTC(tx.shares, 4)} cvCTC shares
             </p>
           )}
         </div>
       </div>
 
-      {/* Details */}
       <div className="col-span-3 flex items-center">
         {tx.user && (
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-cv-text3">
             {tx.user.toLowerCase() === address?.toLowerCase()
               ? "You"
               : shortenAddr(tx.user)}
           </span>
         )}
         {tx.rewards && (
-          <div className="text-[10px] text-gray-500 space-y-0.5">
+          <div className="text-[10px] text-cv-text3 space-y-0.5">
             <p>Staking: +{fmtCTC(tx.rewards.staking, 6)}</p>
             <p>Lending: +{fmtCTC(tx.rewards.lending, 6)}</p>
             <p>LP: +{fmtCTC(tx.rewards.lp, 6)}</p>
           </div>
         )}
         {tx.allocs && (
-          <div className="text-[10px] text-gray-500 space-y-0.5">
+          <div className="text-[10px] text-cv-text3 space-y-0.5">
             <p>Staking: {fmtCTC(tx.allocs.staking, 4)}</p>
             <p>Lending: {fmtCTC(tx.allocs.lending, 4)}</p>
             <p>LP: {fmtCTC(tx.allocs.lp, 4)}</p>
@@ -186,20 +177,18 @@ function TxRow({
         )}
       </div>
 
-      {/* Block number */}
       <div className="col-span-2 flex items-center">
-        <span className="text-xs font-mono text-gray-500">
+        <span className="text-xs font-mono text-cv-text3">
           #{tx.blockNumber.toString()}
         </span>
       </div>
 
-      {/* Tx hash */}
       <div className="col-span-2 flex items-center justify-end">
         <a
           href={`https://creditcoin-testnet.blockscout.com/tx/${tx.txHash}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs font-mono text-green-400/70 hover:text-green-400 transition-colors"
+          className="text-xs font-mono text-cv-green/70 hover:text-cv-green transition-colors"
         >
           {shortenHash(tx.txHash)}
         </a>
@@ -208,7 +197,6 @@ function TxRow({
   );
 }
 
-// ─── Main page ────────────────────────────────────────────────────
 export default function TransactionsPage() {
   const client = usePublicClient();
   const { address } = useAccount();
@@ -367,28 +355,28 @@ export default function TransactionsPage() {
     .reduce((sum, t) => sum + t.amount, 0n);
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen cv-page-gradient">
       <Navbar />
 
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-cv-text1">
               Transactions
             </h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-cv-text2">
               On-chain vault events from the last ~50k blocks
             </p>
           </div>
           <button
             onClick={fetchEvents}
             disabled={loading}
-            className="rounded-lg border border-gray-700 px-4 py-2 text-xs font-medium text-gray-400 hover:border-gray-500 hover:text-white transition-colors disabled:opacity-40 self-start sm:self-auto"
+            className="rounded-2xl bg-cv-elevated px-5 py-2.5 text-xs font-medium text-cv-text2 hover:bg-cv-module hover:text-cv-text1 transition-all duration-200 disabled:opacity-30 self-start sm:self-auto"
           >
             {loading ? (
               <span className="flex items-center gap-2">
-                <span className="h-3 w-3 animate-spin rounded-full border-2 border-gray-600 border-t-green-400" />
+                <span className="h-3 w-3 animate-spin rounded-full border-2 border-cv-elevated border-t-cv-green" />
                 Loading...
               </span>
             ) : (
@@ -398,7 +386,7 @@ export default function TransactionsPage() {
         </div>
 
         {/* Summary stats */}
-        <div className="mb-6 grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
+        <div className="mb-8 grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4">
           {loading ? (
             <>
               <StatSkeleton />
@@ -408,37 +396,29 @@ export default function TransactionsPage() {
             </>
           ) : (
             <>
-              <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-5">
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-500 mb-1">
-                  Total Transactions
-                </p>
-                <p className="text-lg sm:text-2xl font-bold text-white">
+              <div className="rounded-3xl bg-cv-card p-5 sm:p-6">
+                <p className="text-xs text-cv-text3 mb-1">Total Transactions</p>
+                <p className="text-lg sm:text-2xl font-semibold text-cv-text1">
                   {txs.length}
                 </p>
               </div>
-              <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-5">
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-500 mb-1">
-                  Deposits / Withdrawals
-                </p>
-                <p className="text-lg sm:text-2xl font-bold text-white">
-                  <span className="text-green-400">{depositCount}</span>
+              <div className="rounded-3xl bg-cv-card p-5 sm:p-6">
+                <p className="text-xs text-cv-text3 mb-1">Deposits / Withdrawals</p>
+                <p className="text-lg sm:text-2xl font-semibold text-cv-text1">
+                  <span className="text-cv-green">{depositCount}</span>
                   {" / "}
-                  <span className="text-red-400">{withdrawCount}</span>
+                  <span className="text-cv-red">{withdrawCount}</span>
                 </p>
               </div>
-              <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-5">
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-500 mb-1">
-                  Harvests
-                </p>
-                <p className="text-lg sm:text-2xl font-bold text-purple-400">
+              <div className="rounded-3xl bg-cv-card p-5 sm:p-6">
+                <p className="text-xs text-cv-text3 mb-1">Harvests</p>
+                <p className="text-lg sm:text-2xl font-semibold text-cv-purple">
                   {harvestCount}
                 </p>
               </div>
-              <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 sm:p-5">
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-500 mb-1">
-                  Total Volume
-                </p>
-                <p className="text-lg sm:text-2xl font-bold text-white">
+              <div className="rounded-3xl bg-cv-card p-5 sm:p-6">
+                <p className="text-xs text-cv-text3 mb-1">Total Volume</p>
+                <p className="text-lg sm:text-2xl font-semibold text-cv-text1">
                   {fmtCTC(totalVolume)} CTC
                 </p>
               </div>
@@ -452,15 +432,15 @@ export default function TransactionsPage() {
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`rounded-lg px-2.5 sm:px-3 py-1.5 text-[10px] sm:text-xs font-medium transition-colors ${
+              className={`rounded-2xl px-3 sm:px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
                 filter === f.value
-                  ? "bg-gray-800 text-white"
-                  : "text-gray-500 hover:text-gray-300 hover:bg-gray-800/50"
+                  ? "bg-cv-elevated text-cv-text1"
+                  : "text-cv-text3 hover:text-cv-text2 hover:bg-cv-elevated/50"
               }`}
             >
               {f.label}
               {f.value === "Mine" && !address && (
-                <span className="ml-1 text-gray-600 hidden sm:inline">
+                <span className="ml-1 text-cv-text4 hidden sm:inline">
                   (connect wallet)
                 </span>
               )}
@@ -470,15 +450,15 @@ export default function TransactionsPage() {
 
         {/* Error state */}
         {error && (
-          <div className="mb-4 rounded-xl border border-red-800 bg-red-900/20 p-4 text-sm text-red-400">
+          <div className="mb-4 rounded-2xl bg-cv-red/10 p-4 text-sm text-cv-red">
             {error}
           </div>
         )}
 
         {/* Transaction table / card list */}
-        <div className="rounded-2xl border border-gray-800 bg-gray-900 overflow-hidden">
+        <div className="rounded-3xl bg-cv-card overflow-hidden">
           {/* Desktop table header */}
-          <div className="hidden md:grid grid-cols-12 gap-4 border-b border-gray-800 px-6 py-3 text-[10px] uppercase tracking-wider text-gray-500">
+          <div className="hidden md:grid grid-cols-12 gap-4 border-b border-white/5 px-6 py-4 text-xs text-cv-text3">
             <div className="col-span-2">Type</div>
             <div className="col-span-3">Amount</div>
             <div className="col-span-3">Details</div>
@@ -486,7 +466,6 @@ export default function TransactionsPage() {
             <div className="col-span-2 text-right">Tx Hash</div>
           </div>
 
-          {/* Loading skeleton */}
           {loading && (
             <div>
               {Array.from({ length: 5 }).map((_, i) => (
@@ -495,18 +474,17 @@ export default function TransactionsPage() {
             </div>
           )}
 
-          {/* Empty state */}
           {!loading && filtered.length === 0 && (
             <div className="py-16 text-center">
               <div className="mb-3 text-3xl opacity-20">
                 {filter === "Mine" ? "👤" : "📭"}
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-cv-text3">
                 {filter === "Mine"
                   ? "No transactions found for your wallet"
                   : "No transactions found"}
               </p>
-              <p className="mt-1 text-xs text-gray-600">
+              <p className="mt-1 text-xs text-cv-text4">
                 {filter === "Mine" && !address
                   ? "Connect your wallet to see your transactions"
                   : "Try a different filter or deposit some CTC"}
@@ -514,7 +492,6 @@ export default function TransactionsPage() {
             </div>
           )}
 
-          {/* Desktop rows */}
           {!loading && (
             <div className="hidden md:block">
               {filtered.map((tx, idx) => (
@@ -527,7 +504,6 @@ export default function TransactionsPage() {
             </div>
           )}
 
-          {/* Mobile cards */}
           {!loading && (
             <div className="md:hidden">
               {filtered.map((tx, idx) => (
@@ -542,12 +518,12 @@ export default function TransactionsPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-4 text-center">
+        <div className="mt-6 text-center">
           <a
             href={`https://creditcoin-testnet.blockscout.com/address/${VAULT}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] sm:text-xs text-gray-600 hover:text-gray-400 transition-colors"
+            className="text-xs text-cv-text4 hover:text-cv-text3 transition-colors"
           >
             View all events on Blockscout
           </a>
