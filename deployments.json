@@ -1,0 +1,27 @@
+{
+  "network": "Creditcoin Testnet",
+  "chainId": 102031,
+  "rpc": "https://rpc.cc3-testnet.creditcoin.network",
+  "explorer": "https://creditcoin-testnet.blockscout.com",
+  "deployer": "0x44028d1B41cD8E66047Fb79119711d5507250779",
+  "contracts": {
+    "WCTC": "0xBFd5542a97E96D8F2E2D1A39E839c7A15bA731E1",
+    "MockStaking": "0x5e3Fe22590C61818e13CB3F1f75a809A1b014BC3",
+    "MockLendingPool": "0xea927CE7A20F957ECDDe6888ecfDa79f43e6197F",
+    "MockAMM": "0x96784C7deCcAc3Fdc86f5988f66888eb18359c3F",
+    "CreditVault": "0x47bdf18319B5068d88E80C8edFD075d63470e222",
+    "StakingStrategy": "0x70e2FdF55A4314c9ac521f133577CdF4C297DB3b",
+    "LendingStrategy": "0x87FFB21B290B01D7cb8B696dFBFCe692587aAA8D",
+    "LPStrategy": "0x0767Bc9c393967c21F7800C5C806Fdc65C5C77bC"
+  },
+  "blockscoutUrls": {
+    "WCTC": "https://creditcoin-testnet.blockscout.com/address/0xBFd5542a97E96D8F2E2D1A39E839c7A15bA731E1",
+    "MockStaking": "https://creditcoin-testnet.blockscout.com/address/0x5e3Fe22590C61818e13CB3F1f75a809A1b014BC3",
+    "MockLendingPool": "https://creditcoin-testnet.blockscout.com/address/0xea927CE7A20F957ECDDe6888ecfDa79f43e6197F",
+    "MockAMM": "https://creditcoin-testnet.blockscout.com/address/0x96784C7deCcAc3Fdc86f5988f66888eb18359c3F",
+    "CreditVault": "https://creditcoin-testnet.blockscout.com/address/0x47bdf18319B5068d88E80C8edFD075d63470e222",
+    "StakingStrategy": "https://creditcoin-testnet.blockscout.com/address/0x70e2FdF55A4314c9ac521f133577CdF4C297DB3b",
+    "LendingStrategy": "https://creditcoin-testnet.blockscout.com/address/0x87FFB21B290B01D7cb8B696dFBFCe692587aAA8D",
+    "LPStrategy": "https://creditcoin-testnet.blockscout.com/address/0x0767Bc9c393967c21F7800C5C806Fdc65C5C77bC"
+  }
+}
