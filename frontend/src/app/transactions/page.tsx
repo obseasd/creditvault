@@ -213,38 +213,57 @@ export default function TransactionsPage() {
 
     try {
       const currentBlock = await client.getBlockNumber();
-      const fromBlock = currentBlock > 50_000n ? currentBlock - 50_000n : 0n;
+      const TOTAL_RANGE = 20_000n;
+      const CHUNK = 5_000n;
+      const startBlock = currentBlock > TOTAL_RANGE ? currentBlock - TOTAL_RANGE : 0n;
 
-      const [deposits, withdrawals, harvests, rebalances] = await Promise.all([
-        client.getContractEvents({
-          address: VAULT,
-          abi: CREDIT_VAULT_ABI,
-          eventName: "DepositedCTC",
-          fromBlock,
-          toBlock: "latest",
-        }),
-        client.getContractEvents({
-          address: VAULT,
-          abi: CREDIT_VAULT_ABI,
-          eventName: "WithdrawnCTC",
-          fromBlock,
-          toBlock: "latest",
-        }),
-        client.getContractEvents({
-          address: VAULT,
-          abi: CREDIT_VAULT_ABI,
-          eventName: "Harvested",
-          fromBlock,
-          toBlock: "latest",
-        }),
-        client.getContractEvents({
-          address: VAULT,
-          abi: CREDIT_VAULT_ABI,
-          eventName: "Rebalanced",
-          fromBlock,
-          toBlock: "latest",
-        }),
-      ]);
+      // Fetch in chunks to avoid RPC timeout
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const deposits: any[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const withdrawals: any[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const harvests: any[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const rebalances: any[] = [];
+
+      for (let from = startBlock; from <= currentBlock; from += CHUNK) {
+        const to = from + CHUNK - 1n > currentBlock ? currentBlock : from + CHUNK - 1n;
+        const [d, w, h, r] = await Promise.all([
+          client.getContractEvents({
+            address: VAULT,
+            abi: CREDIT_VAULT_ABI,
+            eventName: "DepositedCTC",
+            fromBlock: from,
+            toBlock: to,
+          }),
+          client.getContractEvents({
+            address: VAULT,
+            abi: CREDIT_VAULT_ABI,
+            eventName: "WithdrawnCTC",
+            fromBlock: from,
+            toBlock: to,
+          }),
+          client.getContractEvents({
+            address: VAULT,
+            abi: CREDIT_VAULT_ABI,
+            eventName: "Harvested",
+            fromBlock: from,
+            toBlock: to,
+          }),
+          client.getContractEvents({
+            address: VAULT,
+            abi: CREDIT_VAULT_ABI,
+            eventName: "Rebalanced",
+            fromBlock: from,
+            toBlock: to,
+          }),
+        ]);
+        deposits.push(...d);
+        withdrawals.push(...w);
+        harvests.push(...h);
+        rebalances.push(...r);
+      }
 
       const allTxs: VaultTx[] = [];
 
@@ -328,9 +347,13 @@ export default function TransactionsPage() {
       allTxs.sort((a, b) => Number(b.blockNumber - a.blockNumber));
       setTxs(allTxs);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch events"
-      );
+      const msg = err instanceof Error ? err.message : "Failed to fetch events";
+      if (msg.includes("timed out") || msg.includes("timeout")) {
+        setError("RPC request timed out. The network may be congested — try again in a moment.");
+      } else {
+        setError("Could not load events. Check your connection and try again.");
+      }
+      console.error("Tx fetch error:", msg);
     } finally {
       setLoading(false);
     }
@@ -366,7 +389,7 @@ export default function TransactionsPage() {
               Transactions
             </h2>
             <p className="mt-2 text-sm text-cv-text2">
-              On-chain vault events from the last ~50k blocks
+              On-chain vault events from the last ~20k blocks
             </p>
           </div>
           <button
@@ -450,8 +473,14 @@ export default function TransactionsPage() {
 
         {/* Error state */}
         {error && (
-          <div className="mb-4 rounded-2xl bg-cv-red/10 p-4 text-sm text-cv-red">
-            {error}
+          <div className="mb-4 rounded-2xl bg-cv-amber/10 p-4 flex items-center justify-between gap-3">
+            <p className="text-sm text-cv-amber">{error}</p>
+            <button
+              onClick={fetchEvents}
+              className="shrink-0 rounded-xl bg-cv-elevated px-4 py-1.5 text-xs font-medium text-cv-text2 hover:text-cv-text1 transition-colors"
+            >
+              Retry
+            </button>
           </div>
         )}
 
